@@ -1,0 +1,114 @@
+CREATE TABLE Operator (
+    OperatorID INT PRIMARY KEY,
+    OperatorName VARCHAR(255)
+);
+
+CREATE TABLE TrainRoute (
+    TrainRouteID INT PRIMARY KEY,
+    TrainRouteName VARCHAR(255),
+    Direction VARCHAR(255),
+    OperatorID INT,
+    FOREIGN KEY (OperatorID) REFERENCES Operator(OperatorID)
+);
+
+CREATE TABLE Train (
+    TrainID INT PRIMARY KEY,
+    FuelType VARCHAR(255),
+    TrainRouteID INT,
+    FOREIGN KEY (TrainRouteID) REFERENCES TrainRoute(TrainRouteID)
+);
+
+CREATE TABLE Schedule (
+    ScheduleID INT PRIMARY KEY,
+    DepartureTime DATETIME,
+    StationID INT,
+    TrainRouteID INT,
+    FOREIGN KEY (StationID) REFERENCES Station(StationID),
+    FOREIGN KEY (TrainRouteID) REFERENCES TrainRoute(TrainRouteID)
+
+);
+
+CREATE TABLE Station (
+    StationID INTEGER PRIMARY KEY,
+    Name TEXT,
+    Altitude REAL
+);
+
+CREATE TABLE Car (
+    CarID INT PRIMARY KEY,
+    CarNumberFrontToBack INT,
+    TrainID INT,
+    FOREIGN KEY (TrainID) REFERENCES Train(TrainID)
+);
+
+CREATE TABLE SleepingCar (
+    SleepingCarID INT PRIMARY KEY,
+    CarID INT,
+    FOREIGN KEY (CarID) REFERENCES Car(CarID)
+);
+
+CREATE TABLE SleepingCompartment (
+    SleepingCarID INT,
+    CompartmentID INT,
+    PRIMARY KEY (SleepingCarID, CompartmentID),
+    FOREIGN KEY (SleepingCarID) REFERENCES SleepingCar(SleepingCarID)
+);
+
+CREATE TABLE ChairCar (
+    ChairCarID INT PRIMARY KEY,
+    CarID INT,
+    FOREIGN KEY (CarID) REFERENCES Car(CarID)
+);
+
+CREATE TABLE Bed (
+    BedNumber INT,
+    CompartmentID INT,
+    FOREIGN KEY (CompartmentID) REFERENCES SleepingCompartment(CompartmentID)
+);
+
+CREATE TABLE Seat (
+    SeatNumber INT,
+    ChairCarID INT,
+    FOREIGN KEY (ChairCarID) REFERENCES ChairCar(ChairCarID)
+);
+
+CREATE TABLE ChairCarTicket (
+    TicketID INT,
+    SeatNumber INT,
+    ChairCarID INT,
+    ScheduleID INT,
+    FOREIGN KEY (TicketID) REFERENCES Ticket(TicketID),
+    FOREIGN KEY (SeatNumber, ChairCarID) REFERENCES Seat(SeatNumber, ChairCarID),
+    FOREIGN KEY (ScheduleID) REFERENCES Schedule(ScheduleID)
+);
+
+CREATE TABLE SleepingCarTicket (
+    TicketID INT PRIMARY KEY,
+    CompartmentID INT,
+    SleepingCarID INT,
+    BedNumber INT,
+    FOREIGN KEY (TicketID) REFERENCES Ticket(TicketID),
+    FOREIGN KEY (BedNumber) REFERENCES Bed(BedNumber),
+    FOREIGN KEY (SleepingCarID) REFERENCES SleepingCar(SleepingCarID),
+    FOREIGN KEY (CompartmentID) REFERENCES SleepingCompartment(CompartmentID)
+);
+
+CREATE TABLE CustomerOrder (
+    OrderID INT PRIMARY KEY,
+    OrderTime DATETIME,
+    CustomerID INT,
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID)
+);
+
+CREATE TABLE Customer (
+    CustomerID INT PRIMARY KEY,
+    CustomerName VARCHAR(255),
+    Email VARCHAR(255),
+    MobileNumber VARCHAR(255)
+);
+
+CREATE TABLE Ticket (
+    TicketID INT PRIMARY KEY,
+    OrderID INT,
+    FOREIGN KEY (OrderID) REFERENCES CustomerOrder(OrderID)
+);
