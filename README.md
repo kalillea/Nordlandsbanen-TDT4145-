@@ -7,20 +7,35 @@ This is a train ticketing system database, designed to store information about t
 The database consists of the following tables:
 
 Operator: Stores the train operators.
+
 TrainRoute: Stores train routes and their respective operators.
+
 Train: Stores the trains and their associated fuel types and routes.
+
 Schedule: Stores the schedules for each train route and station.
+
 Station: Stores the train stations and their altitudes.
+
 Car: Stores the individual cars in each train.
+
 SleepingCar: Stores the sleeping cars.
+
 SleepingCompartment: Stores the sleeping compartments within sleeping cars.
+
 ChairCar: Stores the chair cars.
+
 Bed: Stores the beds within sleeping compartments.
+
 Seat: Stores the seats within chair cars.
+
 ChairCarTicket: Stores the tickets for chair cars and their associated schedules.
+
 SleepingCarTicket: Stores the tickets for sleeping compartments and their associated schedules.
+
 CustomerOrder: Stores the customer orders.
+
 Customer: Stores the customers and their contact information.
+
 Ticket: Stores the ticket information and their associated orders.
 
 ## Python Files
